@@ -2,15 +2,18 @@ package controllers
 
 import javax.inject.Inject
 
-import dao.TaskDAO
+import dao.TaskRepository
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 
-class TaskController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+class TaskController @Inject()(
+                                taskDAO: TaskRepository,
+                                cc: ControllerComponents
+                              ) extends AbstractController(cc) {
 
   def getTasks = Action { request =>
     Ok(
-      Json.toJson(new TaskDAO().getAllTasks)
+      Json.toJson(taskDAO.getTasks)
     )
   }
 }
