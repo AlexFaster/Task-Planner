@@ -13,11 +13,14 @@ class TaskService @Inject()(taskDAO: TaskRepository) {
   }
 
   def getTask(id: Long): Task = {
-    println(taskDAO.getById(id))
     taskDAO.getById(id) match {
       case Some(value) => value
       case None => throw EntityNotFoundException()
     }
+  }
+
+  def addTask(task: Task): Task = {
+    taskDAO.add(task)
   }
 
 }

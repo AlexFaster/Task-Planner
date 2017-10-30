@@ -13,6 +13,7 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   override def add(task: Task) = {
+    task.id = getAll.size + 1
     task
   }
 
