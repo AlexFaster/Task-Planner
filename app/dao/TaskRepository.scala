@@ -4,6 +4,8 @@ import com.google.inject.ImplementedBy
 import dao.postgres.TaskRepositoryImpl
 import dto.Task
 
+import scala.collection.mutable.ArrayBuffer
+
 @ImplementedBy(classOf[TaskRepositoryImpl])
 trait TaskRepository {
 
@@ -22,7 +24,7 @@ trait TaskRepository {
 }
 
 object TaskRepository {
-  val tasks = Seq(
+  val tasks = ArrayBuffer(
     Task(1, "Title1"),
     Task(2, "Title2")
   )
