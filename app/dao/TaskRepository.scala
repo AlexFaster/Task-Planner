@@ -1,15 +1,23 @@
 package dao
 
-import javax.inject.Singleton
-
+import com.google.inject.ImplementedBy
+import dao.postgres.TaskRepositoryImpl
 import dto.Task
 
-@Singleton
-class TaskRepository {
+@ImplementedBy(classOf[TaskRepositoryImpl])
+trait TaskRepository {
 
-  def getTasks: Seq[Task] = {
-    TaskRepository.tasks
-  }
+  def getAll: Seq[Task]
+
+  def add(task: Task): Task
+
+  def getById(id: Long): Option[Task]
+
+  def update(task: Task): Task
+
+  def delete(task: Task): Boolean
+
+  def delete(id: Long): Boolean
 
 }
 

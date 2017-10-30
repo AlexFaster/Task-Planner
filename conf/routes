@@ -18,6 +18,7 @@ GET         /users               controllers.UserController.getUsers
 
 #Tasks
 GET         /tasks               controllers.TaskController.getTasks
+GET         /task/:id            controllers.TaskController.getTask(id:Long)
 
 
 
