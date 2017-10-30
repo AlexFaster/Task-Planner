@@ -20,3 +20,5 @@ libraryDependencies += "org.webjars" % "swagger-ui" % "3.2.0"
 
 // Adds additional packages into conf/routes
 // play.sbt.routes.RoutesKeys.routesImport += "com.dreamteam.binders._"
+
+herokuAppName in Compile := "secure-sierra-47475"
