@@ -1,6 +1,4 @@
-package dto
-
-import play.api.libs.json.Json
+package model
 
 sealed trait Priority {
 }

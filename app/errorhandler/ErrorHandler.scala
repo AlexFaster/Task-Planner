@@ -2,7 +2,7 @@ package errorhandler
 
 import javax.inject.Singleton
 
-import dto.errordto.EntityNotFoundDTO
+import dto.errors.EntityNotFoundDTO
 import exceptions.EntityNotFoundException
 import play.api.http.HttpErrorHandler
 import play.api.libs.json.Json

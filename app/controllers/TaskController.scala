@@ -2,8 +2,9 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 
-import dto.Task
+import dto.TaskDTO
 import io.swagger.annotations._
+import model.Task
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.TaskService
@@ -18,7 +19,7 @@ class TaskController @Inject()(
 
   @ApiOperation(
     value = "Retrieve tasks",
-    response = classOf[Task],
+    response = classOf[TaskDTO],
     responseContainer = "List"
   )
   @ApiResponses(
@@ -28,13 +29,13 @@ class TaskController @Inject()(
   )
   def getTasks = Action { request =>
     Ok(
-      Json.toJson(taskService.getTasks)
+      Json.toJson(taskService.getTasks.map(task => TaskDTO.assembleDTO(task)))
     )
   }
 
   @ApiOperation(
     value = "Retrieve task",
-    response = classOf[Task]
+    response = classOf[TaskDTO]
   )
   @ApiResponses(
     Array(
@@ -43,13 +44,13 @@ class TaskController @Inject()(
   )
   def getTask(id: Long) = Action { request =>
     Ok(
-      Json.toJson(taskService.getTask(id))
+      Json.toJson(TaskDTO.assembleDTO(taskService.getTask(id)))
     )
   }
 
   @ApiOperation(
     value = "Add task",
-    response = classOf[Task]
+    response = classOf[TaskDTO]
   )
   @ApiResponses(
     Array(
@@ -58,7 +59,7 @@ class TaskController @Inject()(
   )
   @ApiImplicitParams(
     Array(new ApiImplicitParam(
-      dataType = "dto.Task",
+      dataType = "dto.TaskDTO",
       paramType = "body",
       name = "body",
       required = true,
@@ -66,9 +67,9 @@ class TaskController @Inject()(
       value = "The task to create"))
   )
   def addTask = Action { request =>
-    val task = request.body.asJson.get.as[Task]
+    val task = request.body.asJson.get.as[TaskDTO]
     Ok(
-      Json.toJson(taskService.addTask(task))
+      Json.toJson(TaskDTO.assembleDTO(taskService.addTask(Task(title = task.title))))
     )
   }
 }

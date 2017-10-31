@@ -2,7 +2,7 @@ package dao
 
 import com.google.inject.ImplementedBy
 import dao.postgres.TaskRepositoryImpl
-import dto.Task
+import model.Task
 
 import scala.collection.mutable.ArrayBuffer
 

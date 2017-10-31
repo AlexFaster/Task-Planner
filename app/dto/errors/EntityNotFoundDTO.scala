@@ -1,4 +1,4 @@
-package dto.errordto
+package dto.errors
 
 import play.api.libs.json.Json
 

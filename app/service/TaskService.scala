@@ -3,8 +3,8 @@ package service
 import javax.inject.Inject
 
 import dao.TaskRepository
-import dto.Task
 import exceptions.EntityNotFoundException
+import model.Task
 
 class TaskService @Inject()(taskDAO: TaskRepository) {
 
