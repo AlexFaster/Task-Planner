@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 
-import dto.TaskDTO
+import dto.{TaskDTO, TaskDTOIn}
 import io.swagger.annotations._
 import model.Task
 import play.api.libs.json.Json
@@ -10,9 +10,12 @@ import play.api.mvc.{AbstractController, ControllerComponents}
 import service.TaskService
 import util.HttpStatus
 
+import scala.concurrent.ExecutionContext
+
 @Singleton
 @Api(value = "dev")
 class TaskController @Inject()(
+                                implicit ec: ExecutionContext,
                                 taskService: TaskService,
                                 cc: ControllerComponents
                               ) extends AbstractController(cc) {
@@ -27,24 +30,30 @@ class TaskController @Inject()(
       new ApiResponse(code = HttpStatus.OK_200, message = "Retrieve tasks")
     )
   )
-  def getTasks = Action { request =>
-    Ok(
-      Json.toJson(taskService.getTasks.map(task => TaskDTO.assembleDTO(task)))
+  def getTasks = Action.async { _ =>
+    taskService.getTasks.map(
+      tasks => Ok(
+        Json.toJson(
+          tasks.map(task =>
+            TaskDTO.assembleDTO(task)
+          )
+        )
+      )
     )
   }
 
   @ApiOperation(
     value = "Retrieve task",
-    response = classOf[TaskDTO]
+    response = classOf[TaskDTOIn]
   )
   @ApiResponses(
     Array(
       new ApiResponse(code = HttpStatus.OK_200, message = "Retrieve task")
     )
   )
-  def getTask(id: Long) = Action { request =>
-    Ok(
-      Json.toJson(TaskDTO.assembleDTO(taskService.getTask(id)))
+  def getTask(id: Long) = Action.async { _ =>
+    taskService.getTask(id).map(
+      task => Ok(Json.toJson(TaskDTO.assembleDTO(task)))
     )
   }
 
@@ -59,17 +68,17 @@ class TaskController @Inject()(
   )
   @ApiImplicitParams(
     Array(new ApiImplicitParam(
-      dataType = "dto.TaskDTO",
+      dataType = "dto.TaskDTOIn",
       paramType = "body",
       name = "body",
       required = true,
       allowMultiple = false,
       value = "The task to create"))
   )
-  def addTask = Action { request =>
-    val task = request.body.asJson.get.as[TaskDTO]
-    Ok(
-      Json.toJson(TaskDTO.assembleDTO(taskService.addTask(Task(title = task.title))))
+  def addTask = Action.async { request =>
+    val task = request.body.asJson.get.as[TaskDTOIn]
+    taskService.addTask(Task(title = task.title.get)).map(
+      task => Ok(Json.toJson(TaskDTO.assembleDTO(task)))
     )
   }
 }

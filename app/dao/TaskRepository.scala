@@ -4,29 +4,22 @@ import com.google.inject.ImplementedBy
 import dao.postgres.TaskRepositoryImpl
 import model.Task
 
-import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.Future
 
 @ImplementedBy(classOf[TaskRepositoryImpl])
 trait TaskRepository {
 
-  def getAll: Seq[Task]
+  def getAll: Future[Seq[Task]]
 
-  def add(task: Task): Task
+  def add(task: Task): Future[Task]
 
-  def getById(id: Long): Option[Task]
+  def getById(id: Long): Future[Option[Task]]
 
-  def update(task: Task): Task
+  def update(task: Task): Future[Task]
 
-  def delete(task: Task): Boolean
+  def delete(task: Task): Unit
 
-  def delete(id: Long): Boolean
-
-}
-
-object TaskRepository {
-  val tasks = ArrayBuffer(
-    Task(1, "Title1"),
-    Task(2, "Title2")
-  )
+  def delete(id: Long): Unit
 
 }
+
