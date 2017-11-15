@@ -6,6 +6,7 @@ import dao.TaskRepository
 import dto.TaskDTOIn
 import model.Task
 import play.api.db.slick.DatabaseConfigProvider
+import slick.dbio.DBIOAction
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,24 +40,12 @@ class TaskRepositoryImpl @Inject()(
   }
 
   override def update(taskDTOIn: TaskDTOIn) = {
-
-//    val query =
-
-//    query.update(query.result.headOption.map(item => item.map(task => task.patch(taskDTOIn))))
-
-    for {
-      existing <- Tasks.filter(_.id === taskDTOIn.id).result.headOption
-      merged <- existing.patch(taskDTOIn)
-     } yield merged
-
-//    db.run(updateQuery).flatMap {
-//      x => x match {
-//        case 1 => getById(taskDTOIn.id.get)
-//        case _ => Future(Option.empty)
-//      }
-//    }
-
-
+    val query = Tasks.filter(_.id === taskDTOIn.id.get)
+    val update = query.result.headOption flatMap {
+      case Some(v) => query.update(v.patch(taskDTOIn))
+      case None => DBIOAction.successful(0)
+    }
+    db.run(update).flatMap(_ => getById(taskDTOIn.id.get))
   }
 
 

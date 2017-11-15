@@ -21,7 +21,7 @@ class TaskController @Inject()(
                               ) extends AbstractController(cc) {
 
   @ApiOperation(
-    value = "Retrieve tasks",
+    value = "Get tasks",
     response = classOf[TaskDTO],
     responseContainer = "List"
   )
@@ -43,7 +43,7 @@ class TaskController @Inject()(
   }
 
   @ApiOperation(
-    value = "Retrieve task",
+    value = "Get task",
     response = classOf[TaskDTOIn]
   )
   @ApiResponses(
