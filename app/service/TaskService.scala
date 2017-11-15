@@ -3,6 +3,7 @@ package service
 import javax.inject.Inject
 
 import dao.TaskRepository
+import dto.TaskDTOIn
 import exceptions.EntityNotFoundException
 import model.Task
 
@@ -22,8 +23,19 @@ class TaskService @Inject()(taskDAO: TaskRepository) {
     }
   }
 
+  def updateTask(task: TaskDTOIn): Future[Task] = {
+    taskDAO.update(task).map {
+      case Some(value) => value
+      case None => throw EntityNotFoundException()
+    }
+  }
+
   def addTask(task: Task): Future[Task] = {
     taskDAO.add(task)
+  }
+
+  def deleteTask(id: Long): Future[Int] = {
+    taskDAO.delete(id)
   }
 
 }

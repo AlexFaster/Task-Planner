@@ -2,6 +2,7 @@ package dao
 
 import com.google.inject.ImplementedBy
 import dao.postgres.TaskRepositoryImpl
+import dto.TaskDTOIn
 import model.Task
 
 import scala.concurrent.Future
@@ -15,11 +16,9 @@ trait TaskRepository {
 
   def getById(id: Long): Future[Option[Task]]
 
-  def update(task: Task): Future[Task]
+  def update(task: TaskDTOIn): Future[Option[Task]]
 
-  def delete(task: Task): Unit
-
-  def delete(id: Long): Unit
+  def delete(id: Long): Future[Int]
 
 }
 

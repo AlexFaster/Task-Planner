@@ -81,4 +81,45 @@ class TaskController @Inject()(
       task => Ok(Json.toJson(TaskDTO.assembleDTO(task)))
     )
   }
+
+  @ApiOperation(
+    value = "Update task",
+    response = classOf[TaskDTO]
+  )
+  @ApiResponses(
+    Array(
+      new ApiResponse(code = HttpStatus.OK_200, message = "Updated task")
+    )
+  )
+  @ApiImplicitParams(
+    Array(new ApiImplicitParam(
+      dataType = "dto.TaskDTOIn",
+      paramType = "body",
+      name = "body",
+      required = true,
+      allowMultiple = false,
+      value = "The task to create"))
+  )
+  def updateTask = Action.async { request =>
+    val task = request.body.asJson.get.as[TaskDTOIn]
+    taskService.updateTask(task).map(
+      task => Ok(Json.toJson(TaskDTO.assembleDTO(task)))
+    )
+  }
+
+
+  @ApiOperation(
+    value = "Remove task",
+    response = classOf[Unit]
+  )
+  @ApiResponses(
+    Array(
+      new ApiResponse(code = HttpStatus.NO_CONTENT_204, message = "Deleted task")
+    )
+  )
+  def deleteTask(id: Long) = Action.async { request =>
+    taskService.deleteTask(id).map(
+      _ => NoContent
+    )
+  }
 }

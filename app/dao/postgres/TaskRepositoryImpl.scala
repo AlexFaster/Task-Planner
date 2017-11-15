@@ -3,12 +3,13 @@ package dao.postgres
 import javax.inject.{Inject, Singleton}
 
 import dao.TaskRepository
+import dto.TaskDTOIn
 import model.Task
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 @Singleton
 class TaskRepositoryImpl @Inject()(
@@ -37,21 +38,27 @@ class TaskRepositoryImpl @Inject()(
     db.run(Tasks.filter(_.id === id).result.headOption)
   }
 
-  override def update(task: Task) = {
-    val query = Tasks.filter(_.id === task.id)
+  override def update(taskDTOIn: TaskDTOIn) = {
 
-    val updateQuery = query.result.head.flatMap {task =>
-      query.update(task.patch(Option(task.title)))
-    }
+//    val query =
 
-    db.run(updateQuery).map(
-      _ => task
-    )
+//    query.update(query.result.headOption.map(item => item.map(task => task.patch(taskDTOIn))))
+
+    for {
+      existing <- Tasks.filter(_.id === taskDTOIn.id).result.headOption
+      merged <- existing.patch(taskDTOIn)
+     } yield merged
+
+//    db.run(updateQuery).flatMap {
+//      x => x match {
+//        case 1 => getById(taskDTOIn.id.get)
+//        case _ => Future(Option.empty)
+//      }
+//    }
+
+
   }
 
-  override def delete(task: Task) = {
-    delete(task.id)
-  }
 
   override def delete(id: Long) = {
     db.run(Tasks.filter(_.id === id).delete)

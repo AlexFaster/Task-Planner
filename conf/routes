@@ -20,6 +20,8 @@ GET         /users               controllers.UserController.getUsers
 GET         /tasks               controllers.TaskController.getTasks
 GET         /task/:id            controllers.TaskController.getTask(id:Long)
 POST        /task                controllers.TaskController.addTask
+PUT         /task                controllers.TaskController.updateTask
+DELETE      /task/:id            controllers.TaskController.deleteTask(id: Long)
 
 
 
