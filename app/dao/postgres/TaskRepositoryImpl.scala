@@ -61,7 +61,7 @@ class TaskRepositoryImpl @Inject()(
 
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
-    def name = column[String]("name")
+    def name = column[String]("title")
 
     def * = (id, name) <> (Task.tupled, Task.unapply)
   }
