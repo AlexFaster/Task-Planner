@@ -1,0 +1,1 @@
+web: target/universal/stage/bin/ToDoListBackend -Dhttp.port=${PORT} -Dplay.crypto.secret="x@9vui7rN<<3_f/5Op=lz3gIPdo:v_XEu@f77@8k_cCHQbxtx]8Ca^xlFF3UeQ4r" -Dplay.evolutions.db.default.autoApply=true -Ddb.default.url=${DATABASE_URL} -Ddb.default.driver=org.postgresql.Driver
