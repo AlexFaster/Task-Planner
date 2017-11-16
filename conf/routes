@@ -4,29 +4,29 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET         /                    controllers.UserController.index
+GET           /                    controllers.UserController.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+GET           /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
 
 
 #Auth
-POST        /login               controllers.AuthController.login
+POST          /login               controllers.AuthController.login
 
 #Users
-GET         /users               controllers.UserController.getUsers
+GET           /users               controllers.UserController.getUsers
 
 #Tasks
-GET         /tasks               controllers.TaskController.getTasks
-GET         /task/:id            controllers.TaskController.getTask(id:Long)
-POST        /task                controllers.TaskController.addTask
-PUT         /task                controllers.TaskController.updateTask
-DELETE      /task/:id            controllers.TaskController.deleteTask(id: Long)
+GET           /tasks               controllers.TaskController.getTasks
+GET           /task/:id            controllers.TaskController.getTask(id:Long)
+POST          /task                controllers.TaskController.addTask
+PUT           /task/:id            controllers.TaskController.updateTask(id: Long)
+DELETE        /task/:id            controllers.TaskController.deleteTask(id: Long)
 
 
 
 
 #swagger
-GET         /swagger.json        controllers.ApiHelpController.getResources
-GET         /docs                controllers.SwaggerController.redirectDocs
-GET         /docs/*file          controllers.Assets.at(path="/public/swagger-ui",file)
+GET           /swagger.json        controllers.ApiHelpController.getResources
+GET           /docs                controllers.SwaggerController.redirectDocs
+GET           /docs/*file          controllers.Assets.at(path="/public/swagger-ui",file)

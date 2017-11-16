@@ -7,8 +7,8 @@ import dto.TaskDTOIn
 import exceptions.EntityNotFoundException
 import model.Task
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class TaskService @Inject()(taskDAO: TaskRepository) {
 
@@ -23,8 +23,8 @@ class TaskService @Inject()(taskDAO: TaskRepository) {
     }
   }
 
-  def updateTask(task: TaskDTOIn): Future[Task] = {
-    taskDAO.update(task).map {
+  def updateTask(id: Long, task: TaskDTOIn): Future[Task] = {
+    taskDAO.update(id, task).map {
       case Some(value) => value
       case None => throw EntityNotFoundException()
     }

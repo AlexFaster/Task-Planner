@@ -16,7 +16,7 @@ trait TaskRepository {
 
   def getById(id: Long): Future[Option[Task]]
 
-  def update(task: TaskDTOIn): Future[Option[Task]]
+  def update(id:Long, task: TaskDTOIn): Future[Option[Task]]
 
   def delete(id: Long): Future[Int]
 

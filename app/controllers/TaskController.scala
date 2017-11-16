@@ -77,7 +77,7 @@ class TaskController @Inject()(
   )
   def addTask = Action.async { request =>
     val task = request.body.asJson.get.as[TaskDTOIn]
-    taskService.addTask(Task(title = task.title.get)).map(
+    taskService.addTask(Task(title = task.title.get, description = task.description.get)).map(
       task => Ok(Json.toJson(TaskDTO.assembleDTO(task)))
     )
   }
@@ -100,9 +100,9 @@ class TaskController @Inject()(
       allowMultiple = false,
       value = "The task to create"))
   )
-  def updateTask = Action.async { request =>
+  def updateTask(id: Long) = Action.async { request =>
     val task = request.body.asJson.get.as[TaskDTOIn]
-    taskService.updateTask(task).map(
+    taskService.updateTask(id, task).map(
       task => Ok(Json.toJson(TaskDTO.assembleDTO(task)))
     )
   }
