@@ -2,7 +2,7 @@ package dao
 
 import javax.inject.Singleton
 
-import dto.User
+import dto.UserDTO
 
 @Singleton
 class UserRepository {
@@ -14,7 +14,7 @@ class UserRepository {
 
 object UserRepository {
   private val users = Seq(
-    User(1, "aa", 3),
-    User(2, "bb", 5)
+    UserDTO(1, "aa", 3),
+    UserDTO(2, "bb", 5)
   )
 }

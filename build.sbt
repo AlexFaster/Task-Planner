@@ -15,8 +15,11 @@ libraryDependencies ++= Seq(
   "org.webjars" % "swagger-ui" % "3.2.0",
   "org.postgresql" % "postgresql" % "42.1.4",
   "com.typesafe.play" % "play-slick_2.12" % "3.0.2",
-  "com.typesafe.play" % "play-slick-evolutions_2.12" % "3.0.2"
+  "com.typesafe.play" % "play-slick-evolutions_2.12" % "3.0.2",
+  "be.objectify" %% "deadbolt-scala" % "2.6.0"
 )
+
+resolvers += Resolver.sonatypeRepo("snapshots")
 
 
 

@@ -2,6 +2,8 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 
+import be.objectify.deadbolt.scala.DeadboltActions
+import be.objectify.deadbolt.scala.cache.HandlerCache
 import dto.{TaskDTO, TaskDTOIn}
 import io.swagger.annotations._
 import model.Task
@@ -17,7 +19,10 @@ import scala.concurrent.ExecutionContext
 class TaskController @Inject()(
                                 implicit ec: ExecutionContext,
                                 taskService: TaskService,
-                                cc: ControllerComponents
+                                cc: ControllerComponents,
+                                deadbolt: DeadboltActions,
+                                handlers: HandlerCache
+
                               ) extends AbstractController(cc) {
 
   @ApiOperation(
@@ -30,7 +35,7 @@ class TaskController @Inject()(
       new ApiResponse(code = HttpStatus.OK_200, message = "Retrieve tasks")
     )
   )
-  def getTasks = Action.async { _ =>
+  def getTasks = deadbolt.SubjectPresent()() { _ =>
     taskService.getTasks.map(
       tasks => Ok(
         Json.toJson(
