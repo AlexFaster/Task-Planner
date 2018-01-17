@@ -2,13 +2,16 @@ package controllers
 
 import javax.inject._
 
-import dao.UserRepository
+import dto.UserDTO
 import play.api.libs.json.Json
 import play.api.mvc._
+import service.UserService
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
 class UserController @Inject()(
-                                userDAO: UserRepository,
+                                userService: UserService,
                                 cc: ControllerComponents
                               ) extends AbstractController(cc) {
 
@@ -16,11 +19,11 @@ class UserController @Inject()(
     Ok("dummy")
   )
 
-  def getUsers = Action(implicit request =>
-    Ok(
-      Json.toJson(
-        userDAO.getUsers()
-      )
+  def getUsers = Action.async ( implicit request =>
+    userService.getUsers().map(
+      users => Ok(Json.toJson(
+        users.map(user => UserDTO.assembleDTO(user))
+      ))
     )
   )
 }

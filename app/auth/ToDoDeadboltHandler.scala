@@ -1,14 +1,16 @@
 package auth
 
+import javax.inject.Inject
+
 import be.objectify.deadbolt.scala.models.Subject
 import be.objectify.deadbolt.scala.{AuthenticatedRequest, DeadboltHandler, DynamicResourceHandler}
-import model.User
+import dao.UserRepository
 import play.api.mvc.{Request, Result, Results}
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
-class ToDoDeadboltHandler extends DeadboltHandler {
+class ToDoDeadboltHandler @Inject()(implicit userRepository: UserRepository) extends DeadboltHandler {
 
   override def beforeAuthCheck[A](request: Request[A]): Future[Option[Result]] = Future {
     None
@@ -19,21 +21,20 @@ class ToDoDeadboltHandler extends DeadboltHandler {
   }
 
   override def getSubject[A](request: AuthenticatedRequest[A]): Future[Option[Subject]] =
-    Future {
-      request.subject.orElse {
-        // replace request.session.get("userId") with how you identify the user
-        request.session.get("userId") match {
-          case Some(userId) =>
-            // get from database, identity platform, cache, etc, if some
-            // identifier is present in the request
-            Option(new User(1, "aa", 4))
-          case _ => Option(new User(1, "aa", 4))
-        }
-      }
+    request.session.get("userid") match {
+      case Some(userId) =>
+        // get from database, identity platform, cache, etc, if some
+        // identifier is present in the request
+        userRepository.getUser(userId.toInt).map(user => {
+          print(user.get.name)
+          user
+        })
+      case _ => Future(None)
     }
 
+
   override def onAuthFailure[A](request: AuthenticatedRequest[A]): Future[Result] = {
-    Future (
+    Future(
       Results.Forbidden("403")
     )
   }

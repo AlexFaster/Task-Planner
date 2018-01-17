@@ -1,20 +1,15 @@
 package dao
 
-import javax.inject.Singleton
+import com.google.inject.ImplementedBy
+import dao.postgres.UserRepositoryImpl
+import model.User
 
-import dto.UserDTO
+import scala.concurrent.Future
 
-@Singleton
-class UserRepository {
+@ImplementedBy(classOf[UserRepositoryImpl])
+trait UserRepository {
 
-  def getUsers() = {
-    UserRepository.users
-  }
-}
+  def getUsers(): Future[Seq[User]]
 
-object UserRepository {
-  private val users = Seq(
-    UserDTO(1, "aa", 3),
-    UserDTO(2, "bb", 5)
-  )
+  def getUser(id: Long): Future[Option[User]]
 }

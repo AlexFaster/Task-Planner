@@ -1,6 +1,6 @@
 package service
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
 import dao.TaskRepository
 import dto.TaskDTOIn
@@ -10,6 +10,7 @@ import model.Task
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
+@Singleton
 class TaskService @Inject()(taskDAO: TaskRepository) {
 
   def getTasks: Future[Seq[Task]] = {

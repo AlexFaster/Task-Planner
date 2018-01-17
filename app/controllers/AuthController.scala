@@ -2,12 +2,25 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 
+import dto.LoginDTO._
 import play.api.mvc.{AbstractController, ControllerComponents}
 
-@Singleton
-class AuthController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+import scala.concurrent.ExecutionContext
 
-  def login() = Action { request =>
-    Ok("login")
+@Singleton
+class AuthController @Inject()(
+                                implicit ec: ExecutionContext,
+                                cc: ControllerComponents
+                              ) extends AbstractController(cc) {
+
+  def login() = Action { implicit request =>
+    loginForm.bindFromRequest.fold(
+      errorForm => None,
+      loginInfo => {
+        loginInfo.login
+        loginInfo.password
+      }
+    )
+    Ok("login").withSession("userid" -> "1")
   }
 }

@@ -1,15 +1,16 @@
 package auth
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 
-import be.objectify.deadbolt.scala.{HandlerKey, DeadboltHandler}
+import be.objectify.deadbolt.scala.{DeadboltHandler, HandlerKey}
 import be.objectify.deadbolt.scala.cache.HandlerCache
+import dao.UserRepository
 
 /**
   * @author Steve Chaloner (steve@objectify.be)
   */
 @Singleton
-class MyHandlerCache extends HandlerCache {
+class MyHandlerCache @Inject()(implicit userRepository: UserRepository) extends HandlerCache {
 
   val defaultHandler: DeadboltHandler = new ToDoDeadboltHandler
 
