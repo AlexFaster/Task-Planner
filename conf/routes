@@ -18,10 +18,10 @@ GET           /users               controllers.UserController.getUsers
 
 #Tasks
 GET           /tasks               controllers.TaskController.getTasks
-GET           /task/:id            controllers.TaskController.getTask(id:Long)
-POST          /task                controllers.TaskController.addTask
-PUT           /task/:id            controllers.TaskController.updateTask(id: Long)
-DELETE        /task/:id            controllers.TaskController.deleteTask(id: Long)
+GET           /tasks/:id            controllers.TaskController.getTask(id:Long)
+POST          /tasks                controllers.TaskController.addTask
+PUT           /tasks/:id            controllers.TaskController.updateTask(id: Long)
+DELETE        /tasks/:id            controllers.TaskController.deleteTask(id: Long)
 
 
 
