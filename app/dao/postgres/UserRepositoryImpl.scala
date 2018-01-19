@@ -30,14 +30,21 @@ class UserRepositoryImpl @Inject()(
     db.run(Users.filter(_.id === id).result.headOption)
   }
 
+  def insertUser(user: User): Future[User] = {
+    db.run(
+      Users.map(u => (u.name, u.age, u.accountId))
+        returning Users.map(u => u.id)
+        into ((entity, id) => User(id, entity._1, entity._2, entity._3)) += (user.name, user.age, user.accountId)
+    )
+  }
 
   class UserTable(tag: Tag) extends Table[User](tag, "User") {
 
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
-    def name = column[String]("name")
+    def name = column[Option[String]]("name")
 
-    def age = column[Int]("age")
+    def age = column[Option[Int]]("age")
 
     def accountId = column[Long]("accountId")
 

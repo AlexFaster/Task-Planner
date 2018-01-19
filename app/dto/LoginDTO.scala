@@ -6,7 +6,7 @@ import play.api.data.Forms._
 
 case class LoginDTO(
                      @ApiModelProperty(dataType = "String", required = false) login: String,
-                     @ApiModelProperty(dataType = "String", required = false) password: String,
+                     @ApiModelProperty(dataType = "String", required = false) password: String
 )
 
 object LoginDTO {

@@ -26,8 +26,12 @@ class ToDoDeadboltHandler @Inject()(implicit userRepository: UserRepository) ext
         // get from database, identity platform, cache, etc, if some
         // identifier is present in the request
         userRepository.getUser(userId.toInt).map(user => {
-          print(user.get.name)
-          user
+          if (user.nonEmpty) {
+            print(user.get.name)
+            user
+          } else {
+            None
+          }
         })
       case _ => Future(None)
     }

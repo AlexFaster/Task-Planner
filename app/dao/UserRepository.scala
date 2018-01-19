@@ -12,4 +12,6 @@ trait UserRepository {
   def getUsers(): Future[Seq[User]]
 
   def getUser(id: Long): Future[Option[User]]
+
+  def insertUser(user: User): Future[User]
 }
