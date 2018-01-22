@@ -22,20 +22,24 @@ class UserRepositoryImpl @Inject()(
   private val Users = TableQuery[UserTable]
 
 
-  def getUsers(): Future[Seq[User]] = {
+  override def getUsers(): Future[Seq[User]] = {
     db.run(Users.to[Seq].result)
   }
 
-  def getUser(id: Long): Future[Option[User]] = {
+  override def getUser(id: Long): Future[Option[User]] = {
     db.run(Users.filter(_.id === id).result.headOption)
   }
 
-  def insertUser(user: User): Future[User] = {
+  override def insertUser(user: User): Future[User] = {
     db.run(
       Users.map(u => (u.name, u.age, u.accountId))
         returning Users.map(u => u.id)
         into ((entity, id) => User(id, entity._1, entity._2, entity._3)) += (user.name, user.age, user.accountId)
     )
+  }
+
+  override def getUserByAccountId(accountId: Long): Future[Option[User]] = {
+    db.run(Users.filter(_.accountId === accountId).result.headOption)
   }
 
   class UserTable(tag: Tag) extends Table[User](tag, "User") {

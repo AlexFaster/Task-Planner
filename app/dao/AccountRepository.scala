@@ -11,4 +11,6 @@ import scala.concurrent.Future
 trait AccountRepository {
 
   def insertAccount(account: Account): Future[Account]
+
+  def login(login: String, password: String): Future[Option[Account]]
 }

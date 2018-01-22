@@ -14,4 +14,6 @@ trait UserRepository {
   def getUser(id: Long): Future[Option[User]]
 
   def insertUser(user: User): Future[User]
+
+  def getUserByAccountId(accountId: Long): Future[Option[User]]
 }

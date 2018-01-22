@@ -12,16 +12,17 @@ GET           /assets/*file        controllers.Assets.versioned(path="/public", 
 
 #Auth
 POST          /login               controllers.AuthController.login
+POST          /register            controllers.AuthController.register
 
 #Users
 GET           /users               controllers.UserController.getUsers
 
 #Tasks
 GET           /tasks               controllers.TaskController.getTasks
-GET           /tasks/:id            controllers.TaskController.getTask(id:Long)
-POST          /tasks                controllers.TaskController.addTask
-PUT           /tasks/:id            controllers.TaskController.updateTask(id: Long)
-DELETE        /tasks/:id            controllers.TaskController.deleteTask(id: Long)
+GET           /tasks/:id           controllers.TaskController.getTask(id:Long)
+POST          /tasks               controllers.TaskController.addTask
+PUT           /tasks/:id           controllers.TaskController.updateTask(id: Long)
+DELETE        /tasks/:id           controllers.TaskController.deleteTask(id: Long)
 
 
 

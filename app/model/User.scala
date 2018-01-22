@@ -4,9 +4,9 @@ import be.objectify.deadbolt.scala.models.{Permission, Role, Subject}
 
 class User(val id: Long = 0, val name: Option[String], val age: Option[Int], val accountId: Long) extends Subject {
 
-  def this(name: String, age: Int, accountId: Long) = this(name: Some(name), Some(age), accountId)
+  def this(name: String, age: Int, accountId: Long) = this(name = Some(name), age = Some(age), accountId = accountId)
 
-  def this(accountId: Long) = this(None, None, None, accountId)
+  def this(accountId: Long) = this(name = None, age = None, accountId = accountId)
 
   override def roles: List[Role] = List(SecurityRole("user"))
 

@@ -3,7 +3,7 @@ package dao.postgres
 import javax.inject.Inject
 
 import dao.AccountRepository
-import model.Account
+import model.{Account, User}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
@@ -26,6 +26,10 @@ class AccountRepositoryImpl @Inject()(
         returning Accounts.map(a => a.id)
         into ((entity, id) => Account(id, entity._1, entity._2)) += (account.login, account.password)
     )
+  }
+
+  def login(login: String, password: String): Future[Option[Account]] = {
+    db.run(Accounts.filter(account => account.login === login && account.password === password).result.headOption)
   }
 
   class AccountTable(tag: Tag) extends Table[Account](tag, "Account") {
