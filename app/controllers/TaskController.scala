@@ -56,7 +56,7 @@ class TaskController @Inject()(
       new ApiResponse(code = HttpStatus.OK_200, message = "Retrieve task")
     )
   )
-  def getTask(id: Long) = Action.async { _ =>
+  def getTask(id: Long) = deadbolt.SubjectPresent()() { _ =>
     taskService.getTask(id).map(
       task => Ok(Json.toJson(TaskDTO.assembleDTO(task)))
     )
@@ -80,8 +80,8 @@ class TaskController @Inject()(
       allowMultiple = false,
       value = "The task to create"))
   )
-  def addTask = Action.async { request =>
-    val task = request.body.asJson.get.as[TaskDTOIn]
+  def addTask = deadbolt.SubjectPresent()(parse.json) { implicit request =>
+    val task = request.body.as[TaskDTOIn]
     taskService.addTask(Task(title = task.title.get, description = task.description.get)).map(
       task => Ok(Json.toJson(TaskDTO.assembleDTO(task)))
     )
@@ -105,8 +105,8 @@ class TaskController @Inject()(
       allowMultiple = false,
       value = "The task to create"))
   )
-  def updateTask(id: Long) = Action.async { request =>
-    val task = request.body.asJson.get.as[TaskDTOIn]
+  def updateTask(id: Long) = deadbolt.SubjectPresent()(parse.json) { implicit request =>
+    val task = request.body.as[TaskDTOIn]
     taskService.updateTask(id, task).map(
       task => Ok(Json.toJson(TaskDTO.assembleDTO(task)))
     )
@@ -122,7 +122,7 @@ class TaskController @Inject()(
       new ApiResponse(code = HttpStatus.NO_CONTENT_204, message = "Deleted task")
     )
   )
-  def deleteTask(id: Long) = Action.async { request =>
+  def deleteTask(id: Long) = deadbolt.SubjectPresent()() { implicit request =>
     taskService.deleteTask(id).map(
       _ => NoContent
     )

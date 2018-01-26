@@ -41,7 +41,10 @@ class AuthController @Inject()(
   )
   def login() = Action.async(implicit request => {
     loginForm.bindFromRequest.fold(
-      errorForm => Future(BadRequest),
+      errorForm => {
+        print("error form")
+        Future(BadRequest)
+      },
       loginInfo => {
         val userFut = authService.login(loginInfo.login, loginInfo.password)
         userFut.map {
