@@ -11,7 +11,6 @@ import service.UserService
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-@Api(value = "dev")
 class UserController @Inject()(
                                 userService: UserService,
                                 cc: ControllerComponents

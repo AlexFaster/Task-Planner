@@ -15,7 +15,7 @@ import util.HttpStatus
 import scala.concurrent.ExecutionContext
 
 @Singleton
-@Api(value = "dev")
+@Api(value = "task")
 class TaskController @Inject()(
                                 implicit ec: ExecutionContext,
                                 taskService: TaskService,

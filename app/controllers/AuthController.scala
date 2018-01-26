@@ -14,7 +14,7 @@ import util.HttpStatus
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-@Api(value = "dev")
+@Api(value = "auth")
 class AuthController @Inject()(
                                 implicit ec: ExecutionContext,
                                 cc: ControllerComponents,

@@ -27,7 +27,7 @@ class ToDoDeadboltHandler @Inject()(implicit userRepository: UserRepository) ext
         // identifier is present in the request
         userRepository.getUser(userId.toInt).map(user => {
           if (user.nonEmpty) {
-            print(user.get.name)
+            print(user.get.id)
             user
           } else {
             None
