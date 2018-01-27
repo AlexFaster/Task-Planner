@@ -39,7 +39,7 @@ class ToDoDeadboltHandler @Inject()(implicit userRepository: UserRepository) ext
 
   override def onAuthFailure[A](request: AuthenticatedRequest[A]): Future[Result] = {
     Future(
-      Results.Forbidden("403")
+      Results.Unauthorized
     )
   }
 }
