@@ -10,7 +10,7 @@ import dto.{TokenDTO, UserDTO}
 import io.swagger.annotations._
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
-import service.{AuthService, UserService}
+import service.AuthService
 import util.HttpStatus
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -24,7 +24,6 @@ class AuthController @Inject()(
                                 implicit ec: ExecutionContext,
                                 cc: ControllerComponents,
                                 authService: AuthService,
-                                userService: UserService,
                                 userRepository: UserRepository
                               ) extends AbstractController(cc) {
 
