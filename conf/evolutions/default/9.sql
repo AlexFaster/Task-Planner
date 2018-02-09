@@ -1,0 +1,3 @@
+# --- !Ups
+
+ALTER TABLE "user" ADD COLUMN IF NOT EXISTS "token" VARCHAR(50);

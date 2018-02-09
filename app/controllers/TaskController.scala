@@ -82,9 +82,11 @@ class TaskController @Inject()(
   )
   def addTask = deadbolt.SubjectPresent()(parse.json) { implicit request =>
     val task = request.body.as[TaskDTOIn]
-    taskService.addTask(Task(title = task.title.get, description = task.description.get)).map(
+    val user = request.subject.get
+    taskService.addTask(Task(title = task.title.get, description = task.description.get, userId = user.identifier.toLong)).map(
       task => Ok(Json.toJson(TaskDTO.assembleDTO(task)))
     )
+
   }
 
   @ApiOperation(

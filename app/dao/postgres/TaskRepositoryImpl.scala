@@ -54,7 +54,7 @@ class TaskRepositoryImpl @Inject()(
     db.run(Tasks.filter(_.id === id).delete)
   }
 
-  class TaskTable(tag: Tag) extends Table[Task](tag, "Task") {
+  class TaskTable(tag: Tag) extends Table[Task](tag, "task") {
 
     implicit val myEnumMapper = MappedColumnType.base[TaskStatus, String](
       e => e.toString,
@@ -69,7 +69,9 @@ class TaskRepositoryImpl @Inject()(
 
     def status = column[TaskStatus]("status")
 
-    def * = (id, name, description, status) <> (Task.tupled, Task.unapply)
+    def userId = column[Long]("userid")
+
+    def * = (id, name, description, status, userId) <> (Task.tupled, Task.unapply)
   }
 
 }

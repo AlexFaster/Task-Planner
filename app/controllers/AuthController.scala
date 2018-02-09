@@ -1,14 +1,16 @@
 package controllers
 
+import java.util.{Base64, UUID}
 import javax.inject.{Inject, Singleton}
 
+import dao.UserRepository
 import dto.LoginDTO._
 import dto.RegisterDTO._
-import dto.UserDTO
+import dto.{TokenDTO, UserDTO}
 import io.swagger.annotations._
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
-import service.AuthService
+import service.{AuthService, UserService}
 import util.HttpStatus
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -21,7 +23,9 @@ import scala.concurrent.{ExecutionContext, Future}
 class AuthController @Inject()(
                                 implicit ec: ExecutionContext,
                                 cc: ControllerComponents,
-                                authService: AuthService
+                                authService: AuthService,
+                                userService: UserService,
+                                userRepository: UserRepository
                               ) extends AbstractController(cc) {
 
   @ApiOperation(
@@ -49,7 +53,16 @@ class AuthController @Inject()(
       loginInfo => {
         val userFut = authService.login(loginInfo.login, loginInfo.password)
         userFut.map {
-          case Some(user) => Ok.withSession("userid" -> user.id.toString)
+          case Some(user) =>
+            val token = UUID.randomUUID.toString
+            val tokenWithId = new String(Base64.getEncoder.encode((user.id + ":" + token).getBytes))
+            user.token = Option(token)
+            userRepository.update(user.id, user)
+            Ok(
+              Json.toJson(
+                TokenDTO.assembleDTO(tokenWithId)
+              )
+            )
           case None => Forbidden
         }
       }

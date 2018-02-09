@@ -3,7 +3,13 @@ package model
 import dto.TaskDTOIn
 import model.TaskStatus.TaskStatus
 
-case class Task(var id: Long = 0, title: String, description: String, status: TaskStatus = TaskStatus.INCOMPLETE) {
+case class Task(
+                 var id: Long = 0,
+                 title: String,
+                 description: String,
+                 status: TaskStatus = TaskStatus.INCOMPLETE,
+                 userId: Long
+               ) {
 
   def patch(task: TaskDTOIn): Task =
     this.copy(

@@ -32,7 +32,7 @@ class AccountRepositoryImpl @Inject()(
     db.run(Accounts.filter(account => account.login === login && account.password === password).result.headOption)
   }
 
-  class AccountTable(tag: Tag) extends Table[Account](tag, "Account") {
+  class AccountTable(tag: Tag) extends Table[Account](tag, "account") {
 
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 

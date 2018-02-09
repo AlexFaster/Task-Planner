@@ -1,5 +1,6 @@
 package auth
 
+import java.util.Base64
 import javax.inject.Inject
 
 import be.objectify.deadbolt.scala.models.Subject
@@ -21,11 +22,12 @@ class ToDoDeadboltHandler @Inject()(implicit userRepository: UserRepository) ext
   }
 
   override def getSubject[A](request: AuthenticatedRequest[A]): Future[Option[Subject]] =
-    request.session.get("userid") match {
-      case Some(userId) =>
+    request.headers.get("token") match {
+      case Some(token) =>
         // get from database, identity platform, cache, etc, if some
         // identifier is present in the request
-        userRepository.getUser(userId.toInt).map(user => {
+        val tokens = new String(Base64.getDecoder.decode(token)).split(":")
+        userRepository.getUserByToken(tokens(0).toLong, tokens(1)).map(user => {
           if (user.nonEmpty) {
             print(user.get.id)
             user
